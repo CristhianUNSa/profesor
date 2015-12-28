@@ -4,7 +4,8 @@ angular.module('miApp', [
   'ngRoute',
   'miApp.home',
   'miApp.register',
-  'miApp.welcome'
+  'miApp.welcome',
+  'miApp.addMateria'
 ]).
 config(['$routeProvider', function($routeProvider) {
      $routeProvider.otherwise({
