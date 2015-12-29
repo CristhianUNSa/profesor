@@ -9,23 +9,22 @@ angular.module('miApp.welcome', ['ngRoute'])
     });
 }])
  
-.controller('WelcomeCtrl', ['$scope','CommonProp','$firebase', function($scope,CommonProp,$firebase) {
-	debugger;
+.controller('WelcomeCtrl', ['$scope','CommonProp','$firebaseArray','$firebaseObject','$location', function($scope,CommonProp,$firebaseArray,$firebaseObject,$location) {
 	$scope.username = CommonProp.getUser();
+	if(!$scope.username){
+	    $location.path('/home');
+	}
 	var firebaseObj=new Firebase("https://tutsplusangular.firebaseio.com/Materias");
-	var sync=$firebase(firebaseObj);
-	$scope.materias=sync.$asArray();
+	$scope.materias=$firebaseArray(firebaseObj);
 	$scope.editarMateria=function(id){
-		debugger;
 		var firebaseObj=new Firebase("https://tutsplusangular.firebaseio.com/Materias/"+id);
-		var sync=$firebase(firebaseObj);
-		$scope.materiaUpdate=sync.$asObject();
+		$scope.materiaUpdate=$firebaseObject(firebaseObj);
 		$("#editModal").modal();
 	};
 	$scope.update=function(){
 		var fb=new Firebase("https://tutsplusangular.firebaseio.com/Materias/"+$scope.materiaUpdate.$id);
-		var materia=$firebase(fb);
-		materia.$update({
+		var materia=$firebaseObject(fb);
+		materia.$save({
 			titulo: $scope.materiaUpdate.titulo,
 			descripcion: $scope.materiaUpdate.descripcion,
 			email: $scope.materiaUpdate.email
@@ -38,19 +37,22 @@ angular.module('miApp.welcome', ['ngRoute'])
 	};
 	$scope.confirmarBorrado=function(id){
 		var fb= new Firebase("https://tutsplusangular.firebaseio.com/Materias/"+id);
-		var materia=$firebase(fb);
-		$scope.materiaABorrar=materia.$asObject();
+		$scope.materiaABorrar=$firebaseObject(fb);
 		$('#deleteModal').modal();
 	};
 	$scope.borrarMateria = function() {
         var fb = new Firebase("https://tutsplusangular.firebaseio.com/Materias/" + $scope.materiaABorrar.$id);
-        var materia = $firebase(fb);
-        materia.$remove().then(function(ref) {
-        	toastr.success('Se eliminó la materia con éxito');
-            $('#deleteModal').modal('hide');
-        }, function(error) {
-            console.log("Error:", error);
-            toastr.error('Hubo un problema en su solicitud');
+        fb.remove(function(error) {
+        	if(error){
+        		console.log("Error:", error);
+            	toastr.error('Hubo un problema en su solicitud');
+        	}  else{
+        		toastr.success('Se eliminó la materia con éxito');
+            	$('#deleteModal').modal('hide');
+        	}
         });
-    }
+    };
+    $scope.logout = function(){
+	    CommonProp.logoutUser();
+	};
 }]);

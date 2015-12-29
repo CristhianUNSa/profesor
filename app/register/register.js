@@ -22,11 +22,15 @@ angular.module('miApp.register', ['ngRoute','firebase'])
         var email = $scope.user.email;
         var password = $scope.user.password;
         if (email && password) {
-            auth.$createUser(email, password)
+            auth.$createUser({
+                email:email,
+                password: password
+            })
                 .then(function() {
                     $location.path('/home');
                     login.loading  = false;
-                }, function(error) {
+                    toastr.success('Usuario agregado !');
+                }).catch( function(error) {
                     // do things if failure
                     console.log(error);
                     $scope.regError=true;

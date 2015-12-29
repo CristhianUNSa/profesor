@@ -9,17 +9,17 @@ angular.module('miApp.addMateria', ['ngRoute'])
     });
 }])
  
-.controller('AddMateriaCtrl', ['$scope','$firebase','CommonProp','$location', function($scope,$firebase,CommonProp,$location) {
-	debugger;
-	
+.controller('AddMateriaCtrl', ['$scope','$firebaseArray','CommonProp','$location', function($scope,$firebaseArray,CommonProp,$location) {
+	if(!CommonProp.getUser()){
+		$location.path('/home');
+	}
 	$scope.AgregarMateria=function(){
-		debugger;
 		var titulo=$scope.materia.titulo;
 		var descripcion=$scope.materia.descripcion;
 		var email=CommonProp.getUser();
-		var firebaseObj = new Firebase("https://tutsplusangular.firebaseio.com/Materias");
-		var fb = $firebase(firebaseObj);
-		fb.$push({
+		var ref = new Firebase("https://tutsplusangular.firebaseio.com/Materias");
+		var fb = $firebaseArray(ref);
+		fb.$add({
 			titulo:titulo,
 			descripcion:descripcion,
 			email:email,
@@ -32,5 +32,8 @@ angular.module('miApp.addMateria', ['ngRoute'])
 			console.log(error);
 			toastr.error('Ha ocurrido un error. Intente nuevamente');
 		});
-	}
+	};
+	$scope.logout = function(){
+	    CommonProp.logoutUser();
+	};
 }]);

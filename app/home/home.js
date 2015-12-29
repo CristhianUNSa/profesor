@@ -16,8 +16,13 @@ angular.module('miApp.home', ['ngRoute','firebase'])
     $scope.login=login;
 	var firebaseObj = new Firebase("https://tutsplusangular.firebaseio.com"); 
  	var loginObj = $firebaseAuth(firebaseObj);
+    loginObj.$onAuth(function(authData) {//Si ya se loggeo anteriormente
+        if(authData){
+            CommonProp.setUser(authData.password.email);
+            $location.path('/welcome');
+        }
+     });
  	$scope.SignIn = function(event){
- 		debugger;
  		event.preventDefault();
         login.loading = true;
  		var username= $scope.user.email;
@@ -41,18 +46,31 @@ angular.module('miApp.home', ['ngRoute','firebase'])
         });
  	}
 }])
-.service('CommonProp', function() {//usado para mantener información de loggeo
+.service('CommonProp',['$firebaseAuth','$location' ,function($firebaseAuth,$location) {//usado para mantener información de loggeo
+
     var user = '';
- 
+    var firebaseObj = new Firebase("https://tutsplusangular.firebaseio.com/");
+    var loginObj = $firebaseAuth(firebaseObj);
     return {
         getUser: function() {
+            if(user==''){
+                user=localStorage.getItem("userEmail");
+            }
             return user;
         },
         setUser: function(value) {
+            localStorage.setItem("userEmail",value);
             user = value;
+        },
+        logoutUser:function(){
+            loginObj.$unauth();
+            user='';
+            localStorage.removeItem("userEmail");
+            toastr.warning('Se ha desloggeado con éxito');
+            $location.path('/home');
         }
     };
-})
+}])
 .directive('laddaLoading', [
     function() {
         return {
