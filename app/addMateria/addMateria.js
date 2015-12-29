@@ -25,6 +25,7 @@ angular.module('miApp.addMateria', ['ngRoute'])
 			email:email
 		}).then(function(ref){
 			console.log(ref);
+			toastr.success('Se agregó la materia');
 			$location.path("/welcome");
 		},function(error){
 			console.log(error);
