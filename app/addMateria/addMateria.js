@@ -22,13 +22,15 @@ angular.module('miApp.addMateria', ['ngRoute'])
 		fb.$push({
 			titulo:titulo,
 			descripcion:descripcion,
-			email:email
+			email:email,
+			'.priority': email
 		}).then(function(ref){
 			console.log(ref);
 			toastr.success('Se agregó la materia');
 			$location.path("/welcome");
 		},function(error){
 			console.log(error);
+			toastr.error('Ha ocurrido un error. Intente nuevamente');
 		});
 	}
 }]);
