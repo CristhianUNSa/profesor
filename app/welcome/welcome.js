@@ -24,11 +24,10 @@ angular.module('miApp.welcome', ['ngRoute'])
 	$scope.update=function(){
 		var fb=new Firebase("https://tutsplusangular.firebaseio.com/Materias/"+$scope.materiaUpdate.$id);
 		var materia=$firebaseObject(fb);
-		materia.$save({
-			titulo: $scope.materiaUpdate.titulo,
-			descripcion: $scope.materiaUpdate.descripcion,
-			email: $scope.materiaUpdate.email
-		}).then(function(ref){
+		materia.titulo=$scope.materiaUpdate.titulo;
+		materia.descripcion=$scope.materiaUpdate.descripcion;
+		materia.email=$scope.materiaUpdate.email;
+		materia.$save().then(function(ref){
 			$('#editModal').modal('hide');
 			toastr.success('Se guardó la materia con éxito');
 		},function(error){
