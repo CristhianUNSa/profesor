@@ -11,42 +11,43 @@
  
 </head>
  
-<body ng-controller="AddMateriaCtrl">
+<body ng-controller="AddProfesorCtrl">
  
     <div class="blog-masthead">
         <div class="container">
             <nav class="blog-nav">
                 <a class="blog-nav-item " href="#/welcome">Inicio</a>
-                <a class="blog-nav-item " href="#/addProfesor">Agregar Profesor</a>
-                <a class="blog-nav-item active" href="#/addMateria">Agregar Materia</a>
+                <a class="blog-nav-item active" href="#/addProfesor">Agregar Profesor</a>
+                <a class="blog-nav-item " href="#/addMateria">Agregar Materia</a>
                 <a class="blog-nav-item " href="#/AddHorarios">Agregar Horario</a>
                 <a class="blog-nav-item " href="#/verProfesores">Ver Profesores</a>
                 <a class="blog-nav-item " style="cursor:pointer;" ng-click="logout();">Salir</a>
             </nav>
         </div>
     </div>
+ 
     <div class="container">
  
-        <form class="form-horizontal" ng-submit="AgregarMateria()">
+        <form class="form-horizontal" ng-submit="AgregarProfesor()">
             <fieldset>
  
                 <!-- Form Name -->
-                <legend>Agregar Materia</legend>
+                <legend>Agregar Profesor</legend>
  
                 <!-- Text input-->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="txtTitle">Titulo</label>
+                    <label class="col-md-4 control-label" for="txtTitle">Nombre</label>
                     <div class="col-md-4">
-                        <input id="txtTitle" ng-model="materia.titulo" name="txtTitle" type="text" placeholder="Titulo" class="form-control input-md">
+                        <input id="txtTitle" ng-model="profesor.nombre" name="txtTitle" type="text" placeholder="Nombre" class="form-control input-md">
  
                     </div>
                 </div>
  
                 <!-- Textarea -->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="txtPost">Descripción</label>
+                    <label class="col-md-4 control-label" for="txtPost">Apellido</label>
                     <div class="col-md-4">
-                        <textarea ng-model="materia.descripcion" class="form-control" id="txtPost" name="txtPost"></textarea>
+                        <input placeholder="Apellido" ng-model="profesor.apellido" class="form-control" id="txtPost" name="txtPost">
                     </div>
                 </div>
  
@@ -54,7 +55,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="singlebutton"></label>
                     <div class="col-md-4">
-                        <input id="singlebutton" name="singlebutton" class="btn btn-primary" type="submit" value="Agregar" ng-disabled="!materia.titulo || !materia.descripcion" />
+                        <input id="singlebutton" name="singlebutton" class="btn btn-primary" type="submit" value="Agregar" ng-disabled="!profesor.nombre || !profesor.apellido" />
                     </div>
                 </div>
  
